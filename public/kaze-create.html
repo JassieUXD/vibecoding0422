@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaze — Create</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:       #F5EAE0;
+  --bg1:      #EDE0D4;
+  --surface:  #FDFAF8;
+  --line:     rgba(160,110,70,0.13);
+  --lm:       rgba(160,110,70,0.22);
+  --t1:       #3A1F0D;
+  --t2:       #8B6347;
+  --t3:       #BFA08A;
+  --accent:   #E8724A;
+  --accent-h: #D95E36;
+  --logo:     #5C2E0E;
+  --purple:   #7C4DFF;
+  --r:        10px;
+}
+html, body { height: 100%; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--t1);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+button { font-family: inherit; cursor: pointer; }
+
+/* ══════════════════ NAV ══════════════════ */
+nav {
+  height: 58px; flex-shrink: 0;
+  display: flex; align-items: center;
+  padding: 0 24px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  position: relative; z-index: 10;
+}
+.logo {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px; font-weight: 700; letter-spacing: -0.03em;
+  color: var(--logo); text-decoration: none;
+  margin-right: 36px; flex-shrink: 0;
+}
+.nl { display: flex; gap: 0; flex: 1; align-items: center; }
+.nl a {
+  padding: 5px 13px; font-size: 13.5px; font-weight: 400;
+  color: var(--t2); text-decoration: none; border-radius: var(--r);
+  transition: color 0.15s, background 0.15s; position: relative;
+}
+.nl a:hover { color: var(--t1); }
+.nl a.on { color: var(--accent); font-weight: 500; }
+.nl a.on::after {
+  content: ''; position: absolute; bottom: -1px; left: 13px; right: 13px;
+  height: 2px; background: var(--accent); border-radius: 1px;
+}
+.nr { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.nav-icon {
+  width: 34px; height: 34px; border-radius: var(--r);
+  background: none; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--t2); transition: all 0.15s;
+}
+.nav-icon:hover { background: var(--bg1); color: var(--t1); }
+.nav-icon svg { width: 16px; height: 16px; }
+.nav-assets {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 13px; font-size: 12.5px; font-weight: 400;
+  color: var(--t2); border: 1px solid var(--lm); border-radius: var(--r);
+  background: none; text-decoration: none; transition: all 0.15s;
+}
+.nav-assets:hover { background: var(--bg1); color: var(--t1); }
+.nav-assets svg { width: 13px; height: 13px; }
+.plan-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 12px; font-size: 12.5px; font-weight: 500;
+  background: var(--accent); color: #fff;
+  border: none; border-radius: 20px;
+  transition: background 0.15s;
+}
+.plan-btn:hover { background: var(--accent-h); }
+.plan-avatar {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px;
+}
+
+/* ══════════════════ LAYOUT ══════════════════ */
+.app-body {
+  flex: 1; display: flex; overflow: hidden;
+}
+
+/* ══════════════════ LEFT SIDEBAR ══════════════════ */
+.sidebar-left {
+  width: 80px; flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+  display: flex; flex-direction: column;
+  align-items: center;
+  padding: 12px 0 16px;
+  gap: 6px;
+  overflow-y: auto;
+  -ms-overflow-style: none; scrollbar-width: none;
+}
+.sidebar-left::-webkit-scrollbar { display: none; }
+
+.back-btn {
+  display: flex; align-items: center; gap: 4px;
+  padding: 5px 10px; font-size: 12px; font-weight: 400;
+  color: var(--t2); background: none;
+  border: 1px solid var(--lm); border-radius: var(--r);
+  width: 60px; justify-content: center;
+  transition: all 0.15s; margin-bottom: 4px;
+}
+.back-btn:hover { color: var(--t1); background: var(--bg1); }
+.back-btn svg { width: 12px; height: 12px; }
+
+.new-btn {
+  width: 44px; height: 44px; border-radius: var(--r);
+  background: var(--accent); border: none; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 300;
+  transition: background 0.15s;
+  box-shadow: 0 2px 8px rgba(232,114,74,0.35);
+}
+.new-btn:hover { background: var(--accent-h); }
+
+.folder-btn {
+  width: 44px; height: 44px; border-radius: var(--r);
+  background: none; border: 1px solid var(--lm); color: var(--t3);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.folder-btn:hover { color: var(--t2); background: var(--bg1); }
+.folder-btn svg { width: 18px; height: 18px; }
+
+.divider { width: 44px; height: 1px; background: var(--line); margin: 4px 0; }
+
+.thumb {
+  width: 56px; height: 56px; border-radius: 8px;
+  overflow: hidden; cursor: pointer; flex-shrink: 0;
+  border: 2px solid transparent;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.thumb:hover { border-color: var(--accent); transform: scale(1.04); }
+.thumb.active { border-color: var(--accent); }
+.thumb img, .thumb div {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.t1b { background: linear-gradient(145deg,#C07848,#E0A878); }
+.t2b { background: linear-gradient(145deg,#2860A0,#5890C8); }
+.t3b { background: linear-gradient(145deg,#A06080,#D090A8); }
+.t4b { background: linear-gradient(145deg,#806030,#C09060); }
+.t5b { background: linear-gradient(145deg,#304858,#608098); }
+.t6b { background: linear-gradient(145deg,#E8E0D0,#C8B8A0); }
+.t7b { background: linear-gradient(145deg,#406878,#70A8B8); }
+.t8b { background: linear-gradient(145deg,#181818,#484848); }
+.t9b { background: linear-gradient(145deg,#204828,#508060); }
+
+/* ══════════════════ MAIN CANVAS ══════════════════ */
+.main-canvas {
+  flex: 1; overflow-y: auto;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 32px 40px 40px;
+  background: var(--bg);
+  -ms-overflow-style: none; scrollbar-width: none;
+}
+.main-canvas::-webkit-scrollbar { display: none; }
+
+/* preview images row */
+.preview-row {
+  display: flex; gap: 12px; align-items: flex-end;
+  margin-bottom: 28px; position: relative;
+}
+.preview-sparkle {
+  position: absolute; left: -24px; top: 60px;
+  color: var(--accent); font-size: 20px; opacity: 0.6;
+  pointer-events: none;
+}
+.prev-img {
+  border-radius: 10px; overflow: hidden;
+  box-shadow: 0 4px 20px rgba(60,20,0,0.15);
+  flex-shrink: 0;
+}
+.prev-img img { display: block; object-fit: cover; }
+.pi1 { width: 148px; height: 196px; }
+.pi2 { width: 148px; height: 196px; transform: rotate(-1deg); }
+.pi3 { width: 148px; height: 196px; transform: rotate(1deg); }
+.pi4 { width: 148px; height: 196px; transform: rotate(-1.5deg); }
+
+/* placeholder covers for preview */
+.pv1{background:linear-gradient(145deg,#101010,#303030);}
+.pv2{background:linear-gradient(145deg,#3A1808,#C07040);}
+.pv3{background:linear-gradient(145deg,#083838,#20A080);}
+.pv4{background:linear-gradient(145deg,#300828,#A03080);}
+
+/* page title */
+.page-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 36px; font-weight: 400;
+  color: var(--t1); letter-spacing: -0.01em;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 6px;
+}
+.page-title .star { color: var(--accent); font-size: 22px; font-style: normal; }
+.page-sub { font-size: 14px; color: var(--t2); font-weight: 300; margin-bottom: 24px; }
+
+/* mode pills */
+.mode-pills { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; justify-content: center; }
+.mode-pill {
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 18px; font-size: 13px; font-weight: 400;
+  color: var(--t2); background: var(--surface);
+  border: 1px solid var(--lm); border-radius: 20px;
+  transition: all 0.15s;
+}
+.mode-pill:hover { border-color: var(--accent); color: var(--accent); }
+.mode-pill.on {
+  background: rgba(232,114,74,0.08);
+  border-color: var(--accent); color: var(--accent); font-weight: 500;
+}
+.mode-pill svg { width: 15px; height: 15px; }
+.mode-pill .emoji { font-size: 16px; }
+
+/* input panel */
+.input-panel {
+  width: 100%; max-width: 760px;
+  background: var(--surface);
+  border: 1px solid rgba(160,110,70,0.15);
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(160,110,70,0.08);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.input-panel:focus-within {
+  box-shadow: 0 4px 28px rgba(160,110,70,0.14);
+}
+.itabs {
+  display: flex; border-bottom: 1px solid var(--line);
+  padding: 0 6px;
+}
+.itab {
+  display: flex; align-items: center; gap: 6px;
+  padding: 11px 15px 13px;
+  font-size: 13px; font-weight: 400; color: var(--t3);
+  cursor: pointer; border: none; background: none;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  font-family: inherit; transition: color 0.15s; white-space: nowrap;
+}
+.itab:hover { color: var(--t2); }
+.itab.on { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+.itab svg { width: 14px; height: 14px; }
+.ibody { display: flex; gap: 12px; padding: 14px 18px 10px; }
+.refbtn {
+  flex-shrink: 0; width: 42px; height: 42px; margin-top: 2px;
+  border-radius: var(--r); background: rgba(160,110,70,0.06);
+  border: 1.5px dashed var(--lm); color: var(--t3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; transition: all 0.15s;
+}
+.refbtn:hover { border-color: var(--accent); color: var(--accent); }
+textarea {
+  flex: 1; border: none; outline: none; background: transparent; resize: none;
+  font-family: inherit; font-size: 14px; font-weight: 300;
+  color: var(--t1); min-height: 60px; line-height: 1.65;
+}
+textarea::placeholder { color: var(--t3); font-weight: 300; }
+.ifoot {
+  display: flex; align-items: center;
+  padding: 8px 18px 14px; gap: 6px;
+  border-top: 1px solid var(--line);
+}
+.chip {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 11px; font-size: 12px; font-weight: 400; color: var(--t2);
+  background: none; border: none; border-radius: var(--r);
+  transition: all 0.15s; white-space: nowrap;
+}
+.chip:hover { color: var(--t1); background: rgba(160,110,70,0.07); }
+.chip svg { width: 12px; height: 12px; opacity: 0.7; }
+.sep { width: 1px; height: 14px; background: var(--line); }
+.fright { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.gallery-chip {
+  display: flex; flex-direction: column; align-items: center;
+  position: relative;
+}
+.gallery-new {
+  position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+  font-size: 9px; font-weight: 600; background: var(--accent); color: #fff;
+  padding: 1px 5px; border-radius: 4px; white-space: nowrap;
+}
+.gallery-label {
+  padding: 5px 11px; font-size: 12px; color: var(--t2); font-weight: 400;
+  background: none; border: none; transition: color 0.15s; margin-top: 6px;
+}
+.gallery-label:hover { color: var(--t1); }
+.cnt { font-size: 13px; color: var(--t2); }
+.go {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--accent); border: none;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 10px rgba(232,114,74,0.4);
+  transition: all 0.2s;
+}
+.go:hover { background: var(--accent-h); transform: scale(1.07); box-shadow: 0 4px 18px rgba(232,114,74,0.5); }
+.go svg { width: 16px; height: 16px; }
+
+/* ══════════════════ RIGHT PANEL ══════════════════ */
+.sidebar-right {
+  width: 320px; flex-shrink: 0;
+  background: var(--surface);
+  border-left: 1px solid var(--line);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.rp-header {
+  padding: 18px 20px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.rp-header h2 { font-size: 17px; font-weight: 600; color: var(--t1); }
+.rp-close {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: none; border: none; color: var(--t3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; line-height: 1; transition: all 0.15s;
+}
+.rp-close:hover { color: var(--t2); background: var(--bg1); }
+
+/* gallery tabs */
+.rp-tabs {
+  display: flex; padding: 12px 20px 0; gap: 0;
+  border-bottom: 1px solid var(--line); flex-shrink: 0;
+}
+.rp-tab {
+  padding: 6px 12px 10px; font-size: 13px; font-weight: 400;
+  color: var(--t3); border: none; background: none; font-family: inherit;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: color 0.15s; cursor: pointer; display: flex; align-items: center; gap: 5px;
+}
+.rp-tab:hover { color: var(--t2); }
+.rp-tab.on { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+.rp-tab .new-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--accent);
+}
+
+/* type tabs */
+.rp-type { display: flex; padding: 12px 20px 8px; gap: 4px; flex-shrink: 0; }
+.rp-type-btn {
+  padding: 5px 14px; font-size: 12.5px; font-weight: 400;
+  color: var(--t2); border: none; background: none; font-family: inherit;
+  border-radius: 20px; transition: all 0.15s; cursor: pointer;
+}
+.rp-type-btn:hover { background: var(--bg1); color: var(--t1); }
+.rp-type-btn.on { color: var(--accent); font-weight: 500; }
+
+/* gallery grid */
+.gallery-grid {
+  flex: 1; overflow-y: auto; padding: 0 14px 16px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  align-content: start;
+  -ms-overflow-style: none; scrollbar-width: none;
+}
+.gallery-grid::-webkit-scrollbar { display: none; }
+
+.gitem {
+  border-radius: 8px; overflow: hidden; cursor: pointer;
+  aspect-ratio: 1; position: relative;
+  border: 1px solid var(--line);
+  transition: transform 0.15s, border-color 0.15s;
+  background: var(--bg1);
+}
+.gitem:hover { transform: scale(1.03); border-color: var(--lm); }
+.gitem img, .gitem .gph { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gph { display: flex; align-items: center; justify-content: center; font-size: 22px; }
+
+/* upload tile */
+.gitem.upload {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; border: 1.5px dashed var(--lm);
+  background: rgba(160,110,70,0.03);
+}
+.gitem.upload:hover { border-color: var(--accent); background: rgba(232,114,74,0.04); }
+.upload-plus {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: var(--bg1); border: 1px solid var(--lm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--t3);
+}
+.upload-label { font-size: 11px; font-weight: 500; color: var(--t2); text-align: center; }
+.upload-sub { font-size: 9.5px; color: var(--t3); }
+
+/* use overlay */
+.gitem .use-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0); 
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 8px; opacity: 0; transition: all 0.15s;
+}
+.gitem:hover .use-overlay { opacity: 1; background: rgba(0,0,0,0.25); }
+.use-btn {
+  display: flex; align-items: center; gap: 4px;
+  padding: 4px 11px; font-size: 11px; font-weight: 500;
+  background: rgba(255,255,255,0.9); color: var(--t1);
+  border: none; border-radius: 6px; backdrop-filter: blur(4px);
+  transition: background 0.1s;
+}
+.use-btn:hover { background: #fff; }
+.use-btn svg { width: 11px; height: 11px; }
+
+/* unset overlay for non-image items */
+.gitem.no-action .use-overlay { display: none; }
+
+/* visibility icon top-right */
+.gitem .vis-icon {
+  position: absolute; top: 6px; right: 6px;
+  width: 22px; height: 22px; border-radius: 5px;
+  background: rgba(255,255,255,0.85); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--t2);
+}
+.gitem .vis-icon svg { width: 12px; height: 12px; }
+
+/* view more */
+.rp-footer {
+  padding: 12px 20px 16px; flex-shrink: 0;
+  border-top: 1px solid var(--line);
+}
+.view-more {
+  font-size: 13px; font-weight: 500; color: var(--accent);
+  background: none; border: none; display: flex; align-items: center; gap: 5px;
+  transition: opacity 0.15s;
+}
+.view-more:hover { opacity: 0.75; }
+
+/* gallery bg colors */
+.g1{background:linear-gradient(145deg,#1A0E08,#6A3820);}
+.g2{background:linear-gradient(145deg,#0A1828,#305880);}
+.g3{background:linear-gradient(145deg,#0A1A10,#205030);}
+.g4{background:linear-gradient(145deg,#A09080,#C8B8A0);}
+.g5{background:linear-gradient(145deg,#180808,#602020);}
+.g6{background:linear-gradient(145deg,#B8A890,#D8C8A8);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="kaze-warm.html" class="logo">Kaze</a>
+  <div class="nl">
+    <a href="#" class="on">Create</a>
+    <a href="#">All tools</a>
+    <a href="#">Pricing</a>
+    <a href="#">API</a>
+    <a href="#">Blog</a>
+  </div>
+  <div class="nr">
+    <button class="nav-icon">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="6.5" cy="9.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="13.5" cy="9.5" r="1.3" fill="currentColor" stroke="none"/><path d="M3.5 14.5S5 16 10 16s6.5-1.5 6.5-1.5M3.5 6C5 3.5 7 2.5 10 2.5s5 1 6.5 3.5"/></svg>
+    </button>
+    <button class="nav-icon">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="9" width="14" height="9" rx="1.5"/><path d="M10 9v9M3 12.5h14M6.5 9C5 9 4 8 4 6.5S5 4 6.5 4c2 0 3 2.5 3 5H6.5zm7 0C15 9 16 8 16 6.5S15 4 13.5 4c-2 0-3 2.5-3 5h3z"/></svg>
+    </button>
+    <a href="#" class="nav-assets">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 3V2m6 1V2M2 6.5h12"/></svg>
+      My Assets
+    </a>
+    <button class="plan-btn">
+      <div class="plan-avatar">⚡</div>
+      Ultra
+    </button>
+  </div>
+</nav>
+
+<!-- BODY -->
+<div class="app-body">
+
+  <!-- LEFT SIDEBAR -->
+  <div class="sidebar-left">
+    <a href="kaze-warm.html" class="back-btn">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 2L3.5 6l4 4"/></svg>
+      Back
+    </a>
+    <button class="new-btn">+</button>
+    <button class="folder-btn">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 6a1.5 1.5 0 011.5-1.5H8l2 2h6.5A1.5 1.5 0 0118 8v7.5A1.5 1.5 0 0116.5 17h-13A1.5 1.5 0 012 15.5V6z"/></svg>
+    </button>
+    <div class="divider"></div>
+    <div class="thumb active"><div class="t1b"></div></div>
+    <div class="thumb"><div class="t2b"></div></div>
+    <div class="thumb"><div class="t3b"></div></div>
+    <div class="thumb"><div class="t4b"></div></div>
+    <div class="thumb"><div class="t5b"></div></div>
+    <div class="thumb"><div class="t6b"></div></div>
+    <div class="thumb"><div class="t7b"></div></div>
+    <div class="thumb"><div class="t8b"></div></div>
+    <div class="thumb"><div class="t9b"></div></div>
+  </div>
+
+  <!-- MAIN CANVAS -->
+  <div class="main-canvas">
+    <!-- preview images -->
+    <div class="preview-row">
+      <span class="preview-sparkle">✦</span>
+      <div class="prev-img pi1"><div class="pv1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;">🎭</div></div>
+      <div class="prev-img pi2"><div class="pv2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;">💃</div></div>
+      <div class="prev-img pi3"><div class="pv3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;">🐱</div></div>
+      <div class="prev-img pi4"><div class="pv4" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;">🎨</div></div>
+    </div>
+
+    <!-- title -->
+    <div class="page-title">
+      Create or Edit Image <span class="star">✦</span>
+    </div>
+    <div class="page-sub">Create or edit images with AI</div>
+
+    <!-- mode pills -->
+    <div class="mode-pills">
+      <button class="mode-pill on">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="1.5" width="13" height="13" rx="2"/><path d="M4.5 11l2.5-4 2.5 2.5 2-3"/></svg>
+        Edit Image
+      </button>
+      <button class="mode-pill">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+        Multi-Reference
+      </button>
+      <button class="mode-pill">
+        <span class="emoji">🍌</span>
+        Nano Banana 2
+      </button>
+    </div>
+
+    <!-- input panel -->
+    <div class="input-panel">
+      <div class="itabs">
+        <button class="itab on">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="1.5" width="13" height="13" rx="2"/><path d="M4.5 11l2.5-4 2.5 2.5 2-3"/><circle cx="5" cy="5" r="1.2" fill="currentColor" stroke="none"/></svg>
+          Image
+        </button>
+        <button class="itab">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="4" width="10" height="8" rx="1.5"/><path d="M11 6.5l4-2v7l-4-2"/></svg>
+          Video
+        </button>
+        <button class="itab">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="6"/><path d="M5.5 6.5l5 1.5-5 1.5z" fill="currentColor" stroke="none"/></svg>
+          Motion Control
+        </button>
+        <button class="itab">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 2l1.5 4H14L10.5 8.5l1.5 4.5L8 10.8 4.5 13l1.5-4.5L2.5 6H7z"/></svg>
+          Enhance
+        </button>
+      </div>
+      <div class="ibody">
+        <button class="refbtn">+</button>
+        <textarea rows="3" placeholder="Describe the image you want to create, with optional reference images."></textarea>
+      </div>
+      <div class="ifoot">
+        <button class="chip">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v3.5l2 1"/></svg>
+          Kaze Flash
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 3.5l3 3 3-3"/></svg>
+        </button>
+        <span class="sep"></span>
+        <button class="chip">1K</button>
+        <button class="chip">3:4</button>
+        <button class="chip">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 3.5h10M2 7h7M2 10.5h4.5"/></svg>
+        </button>
+        <div class="fright">
+          <div class="gallery-chip">
+            <span class="gallery-new">New</span>
+            <button class="gallery-label">Gallery</button>
+          </div>
+          <span class="cnt">4 +</span>
+          <button class="go">
+            <svg viewBox="0 0 18 18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3.5l5.5 5.5-5.5 5.5M3.5 9h11"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="sidebar-right">
+    <div class="rp-header">
+      <h2>Gallery</h2>
+      <button class="rp-close">×</button>
+    </div>
+
+    <div class="rp-tabs">
+      <button class="rp-tab on">My Saved <span class="new-tag">NEW</span></button>
+      <button class="rp-tab">Trending</button>
+      <button class="rp-tab">E-commerce</button>
+    </div>
+
+    <div class="rp-type">
+      <button class="rp-type-btn on">Image</button>
+      <button class="rp-type-btn">Video</button>
+    </div>
+
+    <div class="gallery-grid">
+
+      <!-- upload -->
+      <div class="gitem upload no-action">
+        <div class="upload-plus">+</div>
+        <div class="upload-label">Upload file</div>
+        <div class="upload-sub">JPEG / PNG File</div>
+      </div>
+
+      <!-- gallery items -->
+      <div class="gitem">
+        <div class="gph g1">🏇</div>
+        <div class="vis-icon"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 3C4 3 1.5 7 1.5 7S4 11 7 11s5.5-4 5.5-4S10 3 7 3z"/><circle cx="7" cy="7" r="1.8"/></svg></div>
+        <div class="use-overlay"><button class="use-btn"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5"/><path d="M4 6h4M6 4v4"/></svg>Use</button></div>
+      </div>
+
+      <div class="gitem">
+        <div class="gph g2">🐎</div>
+        <div class="vis-icon"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 3C4 3 1.5 7 1.5 7S4 11 7 11s5.5-4 5.5-4S10 3 7 3z"/><circle cx="7" cy="7" r="1.8"/></svg></div>
+        <div class="use-overlay"><button class="use-btn"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5"/><path d="M4 6h4M6 4v4"/></svg>Use</button></div>
+      </div>
+
+      <div class="gitem">
+        <div class="gph g3">🌿</div>
+        <div class="vis-icon"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 3C4 3 1.5 7 1.5 7S4 11 7 11s5.5-4 5.5-4S10 3 7 3z"/><circle cx="7" cy="7" r="1.8"/></svg></div>
+        <div class="use-overlay"><button class="use-btn"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5"/><path d="M4 6h4M6 4v4"/></svg>Use</button></div>
+      </div>
+
+      <div class="gitem">
+        <div class="gph g4">🏜</div>
+        <div class="vis-icon"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M7 3C4 3 1.5 7 1.5 7S4 11 7 11s5.5-4 5.5-4S10 3 7 3z"/><circle cx="7" cy="7" r="1.8"/></svg></div>
+        <div class="use-overlay"><button class="use-btn"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5"/><path d="M4 6h4M6 4v4"/></svg>Use</button></div>
+      </div>
+
+      <div class="gitem">
+        <div class="gph g5">🌅</div>
+        <div class="use-overlay"><button class="use-btn"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5"/><path d="M4 6h4M6 4v4"/></svg>Use</button></div>
+      </div>
+
+      <div class="gitem">
+        <div class="gph g6">🏛</div>
+        <div class="use-overlay"><button class="use-btn"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5"/><path d="M4 6h4M6 4v4"/></svg>Use</button></div>
+      </div>
+
+    </div>
+
+    <div class="rp-footer">
+      <button class="view-more">
+        View more in Gallery →
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // tab switching
+  document.querySelectorAll('.itab').forEach(t => t.onclick = function() {
+    document.querySelectorAll('.itab').forEach(x => x.classList.remove('on'));
+    this.classList.add('on');
+  });
+  document.querySelectorAll('.mode-pill').forEach(t => t.onclick = function() {
+    document.querySelectorAll('.mode-pill').forEach(x => x.classList.remove('on'));
+    this.classList.add('on');
+  });
+  document.querySelectorAll('.rp-tab').forEach(t => t.onclick = function() {
+    document.querySelectorAll('.rp-tab').forEach(x => x.classList.remove('on'));
+    this.classList.add('on');
+  });
+  document.querySelectorAll('.rp-type-btn').forEach(t => t.onclick = function() {
+    document.querySelectorAll('.rp-type-btn').forEach(x => x.classList.remove('on'));
+    this.classList.add('on');
+  });
+  document.querySelectorAll('.thumb').forEach(t => t.onclick = function() {
+    document.querySelectorAll('.thumb').forEach(x => x.classList.remove('active'));
+    this.classList.add('active');
+  });
+  // back button navigates to homepage
+  document.querySelectorAll('.back-btn, .logo').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      window.location.href = 'kaze-warm.html';
+    });
+  });
+</script>
+</body>
+</html>
